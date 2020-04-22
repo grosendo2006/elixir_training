@@ -52,10 +52,13 @@ defmodule Truco.Game do
     |> Enum.shuffle()
   end
 
-  def deal(deck) do
+  def deal(deck, [%Player{} = player_1, %Player{} = player_2]) do
     [cards_1, cards_2 | _res] =
       deck
       |> Enum.chunk(3)
-    [%Player{cards: cards_1}, %Player{cards: cards_2}]
+    [
+      %Player{player_1 | cards: cards_1},
+      %Player{player_2 | cards: cards_2}
+    ]
   end
 end
