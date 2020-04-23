@@ -20,26 +20,18 @@ defmodule Truco do
   @doc """
   Return truco winner
   (The winner of 2 hands wins, to make it short and easy to play)
-  """
-  def play_game(_deck, [%Player{score: 2, name: name}, %Player{}])do
-    IO.puts("Truco Winner: #{name}")
-  end
-
-  @doc """
-  Return truco winner
-  (The winner of 2 hands wins, to make it short and easy to play)
-  """
-  def play_game(_deck, [%Player{}, %Player{score: 2, name: name}])do
-    IO.puts("Truco Winner: #{name}")
-  end
-
-  @doc """
   Deal and call a new hand
   """
-  def play_game(deck, list_players)do
-    deck
-    |> Game.deal(list_players)
-    |> play_hand()
+
+  def play_game(deck,[%Player{score: score_1, name: name_1},
+                      %Player{score: score_2, name: name_2}] = list_players)do
+    cond do
+      score_1 == 2 -> IO.puts("Truco Winner: #{name_1}")
+      score_2 == 2 -> IO.puts("Truco Winner: #{name_2}")
+      true -> deck
+                |> Game.deal(list_players)
+                |> play_hand()
+    end
   end
 
   @doc """
@@ -88,7 +80,7 @@ defmodule Truco do
   """
   def choose([%Player{cards: cards_1} = player_1, %Player{cards: cards_2}= player_2]) do
     IO.puts("Here are yours cards")
-
+    IO.inspect cards_1
     cards_1
     |> Enum.map(fn %Card{name: name} -> IO.puts(name) end)
 
@@ -111,6 +103,19 @@ defmodule Truco do
 
   @doc """
   compare player and pc cards
+  ## Examples
+    iex> players = [%Truco.Player{card_selected: %Truco.Card{name: "1 de Espada", magic: 13} }, %Truco.Player{card_selected:  %Truco.Card{name: "2 de Espada", magic: 8}}]
+    iex> Truco.compare(players)
+    {:win, [%Truco.Player{card_selected: %Truco.Card{name: "1 de Espada", magic: 13} }, %Truco.Player{card_selected:  %Truco.Card{name: "2 de Espada", magic: 8}}]}
+
+    iex> players = [%Truco.Player{card_selected:  %Truco.Card{name: "2 de Espada", magic: 8}}, %Truco.Player{card_selected: %Truco.Card{name: "1 de Espada", magic: 13} }]
+    iex> Truco.compare(players)
+    {:loose, [%Truco.Player{card_selected:  %Truco.Card{name: "2 de Espada", magic: 8}}, %Truco.Player{card_selected: %Truco.Card{name: "1 de Espada", magic: 13} }]}
+
+    iex> players = [%Truco.Player{card_selected:  %Truco.Card{name: "2 de Espada", magic: 8}}, %Truco.Player{card_selected: %Truco.Card{name: "2 de Copa", magic: 8} }]
+    iex> Truco.compare(players)
+    {:tie, [%Truco.Player{card_selected:  %Truco.Card{name: "2 de Espada", magic: 8}}, %Truco.Player{card_selected: %Truco.Card{name: "2 de Copa", magic: 8} }]}
+
   """
   def compare([
         %Player{card_selected: %Card{magic: magic_1}} = player_1,
@@ -172,24 +177,25 @@ defmodule Truco do
     |> play_hand
   end
 
-  @doc """
-  Get input card choice and validate if that is a number
-  """
-  defp get_number_in(text, list) do
+  defp get_number_in(promt, list) do
     string =
-      IO.gets(text)
+      IO.gets(promt)
       |> String.trim()
 
     case string do
       "" ->
-        get_number_in(text, list)
+        get_number_in(promt, list)
 
       number ->
-        if Enum.member?(list, String.to_integer(number)) do
-          String.to_integer(number)
-        else
-          get_number_in(text, list)
-        end
+        check(number, promt,list)
+    end
+  end
+
+  defp check(number, promt, list)do
+    if Enum.member?(list, String.to_integer(number)) do
+      String.to_integer(number)
+    else
+      get_number_in(promt, list)
     end
   end
 

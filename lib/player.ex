@@ -3,6 +3,14 @@ defmodule Truco.Player do
 
   @doc """
   get card selected form the player cards
+  ## Examples
+    iex> cards = [ %Truco.Card{name: "1 de Espada", magic: 13}, %Truco.Card{name: "2 de Espada", magic: 8}, %Truco.Card{name: "3 de Espada", magic: 9} ]
+    iex> Truco.Player.player_choose(cards, 1)
+    %Truco.Card{name: "1 de Espada", magic: 13}
+    iex> Truco.Player.player_choose(cards, 2)
+    %Truco.Card{name: "2 de Espada", magic: 8}
+    iex> Truco.Player.player_choose(cards, 3)
+    %Truco.Card{name: "3 de Espada", magic: 9}
   """
   def player_choose(cards, card_number)do
     Enum.at(cards, card_number - 1)
@@ -12,6 +20,18 @@ defmodule Truco.Player do
   In the first turn, get the second best card, in the second turn
   get the worse and let the best card for the last turn
   (most popular way to play)
+  ## Examples
+    iex> cards = [ %Truco.Card{name: "1 de Espada", magic: 13}, %Truco.Card{name: "2 de Espada", magic: 8}, %Truco.Card{name: "3 de Espada", magic: 9} ]
+    iex> Truco.Player.pc_choose(cards)
+    %Truco.Card{name: "3 de Espada", magic: 9}
+
+    iex> cards = [ %Truco.Card{name: "1 de Espada", magic: 13}, %Truco.Card{name: "2 de Espada", magic: 8}]
+    iex> Truco.Player.pc_choose(cards)
+    %Truco.Card{name: "2 de Espada", magic: 8}
+
+    iex> cards = [ %Truco.Card{name: "1 de Espada", magic: 13}]
+    iex> Truco.Player.pc_choose(cards)
+    %Truco.Card{name: "1 de Espada", magic: 13}
   """
   def pc_choose(cards)do
     best_choice(cards)
