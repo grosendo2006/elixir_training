@@ -23,3 +23,4 @@ erl_crash.dump
 elixir_training-*.tar
 
 .elixir_ls/
+.env
