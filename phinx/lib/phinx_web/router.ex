@@ -7,5 +7,8 @@ defmodule PhinxWeb.Router do
 
   scope "/api", PhinxWeb do
     pipe_through :api
+    resources "/users", UserController do
+      get "/hack", UserController, :hack
+    end
   end
 end

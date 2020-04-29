@@ -18,6 +18,11 @@ config :phinx, PhinxWeb.Endpoint,
   pubsub: [name: Phinx.PubSub, adapter: Phoenix.PubSub.PG2],
   live_view: [signing_salt: "JKSyJ/G8"]
 
+config :phinx, Phinx.Vault,
+  ciphers: [
+    default: {Cloak.Ciphers.AES.GCM, tag: "AES.GCM.V1", key: Base.decode64!("YBpO4vJ9Ca4J/e0W00BU5IcwE9bEJdQ8kRQDWApaUE8=")}
+  ]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
