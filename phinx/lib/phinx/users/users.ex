@@ -43,9 +43,6 @@ defmodule Phinx.Users do
   end
 
   def delete(user) do
-    # DB Connection
-    # TODO: FK, relaciones, etc
-
     user
     |> Repo.delete()
   end

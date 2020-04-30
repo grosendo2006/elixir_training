@@ -11,10 +11,10 @@ defmodule PhinxWeb.UserController do
   end
 
   def create(conn, %{"user" => user}) do
-    IO.inspect user
-    with {:ok, _} <- Users.create(user) do
+    with {:ok, new_user} <- Users.create(user) do
       conn
-      |> send_resp(:created, "")
+      |> put_status(:created)
+      |> render("user.json", user: new_user)
     end
   end
 
