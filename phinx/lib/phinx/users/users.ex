@@ -6,11 +6,17 @@ defmodule Phinx.Users do
   alias Phinx.Repo
   use Cloak.Ecto.Binary, vault: Phinx.Vault
 
+  @doc """
+  List all users.
+  """
   def list do
     User
     |> Repo.all()
   end
 
+  @doc """
+  Return user with id = id.
+  """
   def get(id) do
     case user = Repo.get(User, id) do
       %User{} -> {:ok, user}
@@ -18,6 +24,9 @@ defmodule Phinx.Users do
     end
   end
 
+  @doc """
+  Create new user with attrs.
+  """
   def create(attrs) do
     user =
       %User{}
@@ -30,6 +39,9 @@ defmodule Phinx.Users do
     end
   end
 
+  @doc """
+  Update user attr with id=id.
+  """
   def update(%User{} = user, attrs) do
     user =
       user
@@ -42,6 +54,9 @@ defmodule Phinx.Users do
     end
   end
 
+  @doc """
+  Delete user with id=id.
+  """
   def delete(user) do
     user
     |> Repo.delete()
